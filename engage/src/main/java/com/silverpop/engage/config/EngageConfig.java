@@ -25,7 +25,7 @@ public class EngageConfig {
     public static final String CURRENT_CAMPAIGN = "CURRENT_CAMPAIGN";
     public static final String CURRENT_CAMPAIGN_EXPIRATION_TIMESTAMP = "CURRENT_CAMPAIGN_EXPIRATION_TIMESTAMP";
 
-    public static final String PRIMARY_USER_ID_SET_EVENT = "com.silverpop.engage.PRIMARY_USER_ID_SET_EVENT";
+    public static final String PRIMARY_USER_OR_ANONYMOUD_ID_SET_EVENT = "com.silverpop.engage.PRIMARY_USER_ID_SET_EVENT";
 
     private static Location currentLocationCache;
     private static Date currentLocationCacheBirthday;
@@ -102,7 +102,7 @@ public class EngageConfig {
         editor.putString(PRIMARY_USER_ID, primaryUserId);
         editor.commit();
 
-        context.sendBroadcast(new Intent(PRIMARY_USER_ID_SET_EVENT));
+        context.sendBroadcast(new Intent(PRIMARY_USER_OR_ANONYMOUD_ID_SET_EVENT));
     }
 
     public static String anonymousUserId(Context context) {
@@ -112,6 +112,7 @@ public class EngageConfig {
     public static void storeAnonymousUserId(Context context, String anonymousUserId) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(ENGAGE_CONFIG_PREF_ID, Context.MODE_PRIVATE);
         sharedPreferences.edit().putString(ANONYMOUS_ID, anonymousUserId).commit();
+        context.sendBroadcast(new Intent(PRIMARY_USER_OR_ANONYMOUD_ID_SET_EVENT));
     }
 
     public static String currentCampaign(Context context) {
