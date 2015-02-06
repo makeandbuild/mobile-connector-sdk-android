@@ -51,6 +51,7 @@ public class EngageApplication
 
     @Override
     public void onCreate() {
+        Log.e(TAG, "Version 1.0.0-digicel 201502021600");
         super.onCreate();
 
         Resources r = getResources();
@@ -199,15 +200,19 @@ public class EngageApplication
 
 
     private void waitForPrimaryUserIdThenCreateInstalledEvent() {
-        Log.i(TAG, "Registering primary user id listener for installed event");
-        final String primaryUserId = EngageConfig.primaryUserId(getApplicationContext());
-        if (primaryUserId != null && !primaryUserId.isEmpty()) {
+        if (EngageConfig.primaryUserId(getApplicationContext()) != null && !EngageConfig.primaryUserId(getApplicationContext()).isEmpty()) {
+            Log.e(TAG, "installedEvent primaryUserId set, posting");
+            createAndPostInstalledEvent();
+        } else if (EngageConfig.anonymousUserId(getApplicationContext()) != null && !EngageConfig.anonymousUserId(getApplicationContext()).isEmpty()) {
+            Log.e(TAG, "installedEvent anonymousUserId set, posting");
             createAndPostInstalledEvent();
         } else {
+            Log.e(TAG, "installedEvent registering listener for PRIMARY_USER_OR_ANONYMOUD_ID_SET_EVENT");
             this.registerReceiver(
                     new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context context, Intent intent) {
+                            Log.e(TAG, "installedEvent PRIMARY_USER_OR_ANONYMOUD_ID_SET_EVENT received");
                             createAndPostInstalledEvent();
 
                             // remove listener
@@ -225,16 +230,19 @@ public class EngageApplication
     }
 
     private void waitForPrimaryUserIdThenCreateSessionStartedEvent() {
-        Log.i(TAG, "Registering primary user id listener for session started event");
-
-        final String primaryUserId = EngageConfig.primaryUserId(getApplicationContext());
-        if (primaryUserId != null && !primaryUserId.isEmpty()) {
+        if (EngageConfig.primaryUserId(getApplicationContext()) != null && !EngageConfig.primaryUserId(getApplicationContext()).isEmpty()) {
+            Log.e(TAG, "sessionEvent primaryUserId set, posting");
             createAndPostSessionStartedEvent();
+        } else if (EngageConfig.anonymousUserId(getApplicationContext()) != null && !EngageConfig.anonymousUserId(getApplicationContext()).isEmpty()) {
+                Log.e(TAG, "sessionEvent anonymousUserId set, posting");
+                createAndPostSessionStartedEvent();
         } else {
+            Log.e(TAG, "sessionEvent registering listener for PRIMARY_USER_OR_ANONYMOUD_ID_SET_EVENT");
             this.registerReceiver(
                     new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context context, Intent intent) {
+                            Log.e(TAG, "sessionEvent PRIMARY_USER_OR_ANONYMOUD_ID_SET_EVENT received");
                             createAndPostSessionStartedEvent();
 
                             // remove listener
