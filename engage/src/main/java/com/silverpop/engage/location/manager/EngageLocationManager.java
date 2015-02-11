@@ -3,19 +3,25 @@ package com.silverpop.engage.location.manager;
 import android.app.PendingIntent;
 import android.location.Location;
 
-import com.silverpop.engage.EngageApplication;
-
+import android.content.Context;
 /**
  * Created by jeremydyer on 6/2/14.
  */
 public interface EngageLocationManager {
 
+//    /**
+//     * Inject EngageApplication instance into the plugin.
+//     *
+//     * @param engageApplication
+//     */
+//    public void setEngageApplication(EngageApplication engageApplication);
+
     /**
      * Inject EngageApplication instance into the plugin.
      *
-     * @param engageApplication
+     * @param context
      */
-    public void setEngageApplication(EngageApplication engageApplication);
+    public void setContext(Context context);
 
     /**
      * Begin monitoring for location updates.
